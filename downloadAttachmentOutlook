@@ -1,0 +1,19 @@
+import win32com.client
+
+
+outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI") #Opens Microsoft Outlook
+folder = outlook.Folders[3] #N4 Invocie folder
+subFolder = folder.Folders[5]#N4 Invoice subfolder
+subFolderMessages = subFolder.Items #Invoice items object
+message = subFolderMessages.GetFirst() 
+while True:
+    messageSubjectLine = message.Subject
+    subFolderItemAttachments = message.Attachments
+    nbrOfAttachmentInMessage = subFolderItemAttachments.Count
+    x = 1
+    while x <= nbrOfAttachmentInMessage:
+        attachment = subFolderItemAttachments.item(x)
+        #Saves attachment to location
+        attachment.SaveAsFile('C:\\Users\\kkim\\Desktop\\InvoiceOutlook' + '\\'+ str(attachment)) 
+        break    
+    message = subFolderMessages.GetNext()
